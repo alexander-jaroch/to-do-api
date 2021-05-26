@@ -1,23 +1,43 @@
 "use strict";
 var ToDoApp;
 (function (ToDoApp) {
-    var toDoList = document.querySelector(".todolist");
+    const toDoList = document.querySelector(".todo-list");
+    const newToDoInput = document.querySelector("input.new-todo");
+    const newToDoButton = document.querySelector("i.new-todo");
+    const toDoCount = document.querySelector(".todo-count");
+    const toDoDone = document.querySelector(".todo-done");
+    const toDoRatio = document.querySelector(".todo-ratio");
+    function add() {
+        request("POST", "/add", response => {
+            if (response) {
+                createToDo(response);
+            }
+        }, { text: newToDoInput.value });
+    }
+    newToDoInput.addEventListener("keypress", event => {
+        if (event.key === "Enter") {
+            add();
+        }
+    });
+    newToDoButton.addEventListener("click", () => {
+        add();
+    });
     getItems();
     function getItems() {
-        var http = new XMLHttpRequest();
-        request("GET", "/items", function (response) {
+        const http = new XMLHttpRequest();
+        request("GET", "/items", response => {
             if (response) {
-                for (var _i = 0, response_1 = response; _i < response_1.length; _i++) {
-                    var item = response_1[_i];
+                for (const item of response) {
                     createToDo(item);
                 }
             }
         });
     }
     function createToDo(item) {
-        var toDoItem = document.createElement("div");
+        newToDoInput.value = "";
+        const toDoItem = document.createElement("div");
         toDoItem.classList.add("todo-item");
-        var check = document.createElement("i");
+        const check = document.createElement("i");
         check.classList.add("far");
         if (item.checked) {
             check.classList.add("fa-check-square");
@@ -25,42 +45,52 @@ var ToDoApp;
         else {
             check.classList.add("fa-square");
         }
-        check.addEventListener("click", function () {
-            request("PATCH", "/check/" + item.id, function () {
+        check.addEventListener("click", () => {
+            request("PATCH", "/check/" + item.id, () => {
                 check.classList.toggle("fa-check-square");
                 check.classList.toggle("fa-square");
+                updateCount();
             });
         });
         toDoItem.appendChild(check);
-        var input = document.createElement("input");
-        var text = document.createElement("span");
+        const input = document.createElement("input");
+        const text = document.createElement("span");
         text.innerText = item.text;
         toDoItem.appendChild(text);
-        text.addEventListener("click", function () {
+        text.addEventListener("click", () => {
             text.replaceWith(input);
+            input.focus();
         });
         input.type = "text";
         input.value = text.innerText || "";
-        input.addEventListener("keypress", function (event) {
+        function edit() {
+            request("PATCH", "/edit/" + item.id, () => {
+                text.innerText = input.value;
+                input.replaceWith(text);
+            }, { text: input.value });
+        }
+        input.addEventListener("keypress", event => {
             if (event.key === "Enter") {
-                request("PATCH", "/edit/" + item.id, function () {
-                    text.innerText = input.value;
-                    input.replaceWith(text);
-                }, { text: input.value });
+                edit();
             }
         });
-        var trash = document.createElement("i");
+        input.addEventListener("blur", () => {
+            edit();
+        });
+        const trash = document.createElement("i");
         trash.classList.add("far", "fa-trash-alt");
-        trash.addEventListener("click", function () {
-            request("DELETE", "/remove/" + item.id, function () {
+        trash.addEventListener("click", () => {
+            request("DELETE", "/remove/" + item.id, () => {
                 toDoItem.remove();
+                updateCount();
             });
         });
         toDoItem.appendChild(trash);
         toDoList.appendChild(toDoItem);
+        updateCount();
     }
     function request(method, url, callback, data) {
-        var http = new XMLHttpRequest();
+        const http = new XMLHttpRequest();
         http.open(method, url);
         if (data) {
             http.send(JSON.stringify(data));
@@ -70,10 +100,19 @@ var ToDoApp;
         }
         http.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
-                var response = this.response ? JSON.parse(this.response) : undefined;
+                const response = this.response ? JSON.parse(this.response) : undefined;
                 callback(response);
             }
         };
+    }
+    function updateCount() {
+        request("GET", "/count", response => {
+            if (response) {
+                toDoDone.innerText = response.done.toString();
+                toDoCount.innerText = response.all.toString();
+                toDoRatio.innerText = Math.round(response.done / response.all * 100).toString();
+            }
+        });
     }
 })(ToDoApp || (ToDoApp = {}));
 //# sourceMappingURL=Main.js.map

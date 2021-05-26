@@ -12,7 +12,7 @@ fun Route.staticRoutes() {
     }
 
     get("/{filename}") {
-        val filename: String? = call.parameters["filename"];
+        val filename: String? = call.parameters["filename"]
         if (filename != null) {
             call.respondFile(File("files/${filename}"))
         } else {
