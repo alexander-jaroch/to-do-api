@@ -8,13 +8,13 @@ import java.io.File
 
 fun Route.staticRoutes() {
     get("/") {
-        call.respondFile(File("files/index.html"))
+        call.respondFile(File("resources/index.html"))
     }
 
     get("/{filename}") {
         val filename: String? = call.parameters["filename"]
         if (filename != null) {
-            call.respondFile(File("files/${filename}"))
+            call.respondFile(File("resources/${filename}"))
         } else {
             call.respond(HttpStatusCode.NotFound)
         }

@@ -1,0 +1,109 @@
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+}
+
+body {
+    margin: 4em auto;
+    max-width: 400px;
+    min-width: 320px;
+    width: 50%;
+}
+
+h1 {
+    font-size: 2em;
+    position: relative;
+}
+
+h1 .to-do-count {
+    color: #999;
+    position: absolute;
+    right: 0;
+}
+
+.to-do-add {
+    align-items: center;
+    display: flex;
+    height: 2.5em;
+    justify-content: space-between;
+    margin: 1em 0 0 0;
+    width: 100%;
+}
+
+.to-do-add > *:not(div),
+.to-do-item {
+    border: 0.1em solid #999;
+}
+
+.to-do-add > *:not(div) {
+    height: 100%;
+}
+
+.to-do-add > input {
+    flex: 1 0 auto;
+    padding: 0 0.75em;
+}
+
+.to-do-add > div {
+    flex: 0 0 0.5em;
+}
+
+.to-do-add > i {
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 2.5em;
+    justify-content: center;
+}
+
+.to-do-list {
+    margin: 1em 0 0 0;
+}
+
+.to-do-item {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    height: 2.5em;
+    justify-content: space-between;
+    margin-bottom: 1em;
+    padding: 0 0.75em;
+}
+
+.to-do-item > span {
+    align-items: center;
+    display: flex;
+    flex: 1 0 0;
+    overflow: hidden;
+    margin: 0 0.5em;
+    white-space: nowrap;
+}
+
+.to-do-item > span:hover {
+    cursor: cursor;
+}
+
+.to-do-item > .fa-trash-alt {
+    visibility: hidden;
+}
+
+.to-do-item:hover > .fa-trash-alt {
+    visibility: visible;
+}
+
+.to-do-item > .fa-trash-alt:hover,
+.to-do-item > .fa-check-square:hover,
+.to-do-item > .fa-square:hover {
+    cursor: pointer;
+}
+
+.to-do-add > *:not(div):hover,
+.to-do-add input:focus,
+.to-do-item:hover,
+.to-do-item:focus-within {
+    outline: 0.1em solid #88e;
+    border-color: #88e;
+}
