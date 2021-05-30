@@ -1,4 +1,4 @@
-package com.todoapi.files
+package com.todoapi.routes
 
 import io.ktor.application.*
 import io.ktor.http.*

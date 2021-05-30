@@ -1,6 +1,6 @@
 package com.todoapi
 
-import com.todoapi.files.staticRoutes
+import com.todoapi.routes.staticRoutes
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*
