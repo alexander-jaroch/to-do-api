@@ -1,13 +1,10 @@
 package com.todoapi
 
-import com.todoapi.files.staticRoutes
-import com.todoapi.files.toDoRoutes
+import com.todoapi.routes.staticRoutes
+import com.todoapi.routes.toDoRoutes
 import com.todoapi.todo.ToDoList
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
 import io.ktor.routing.*
-import io.ktor.http.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
